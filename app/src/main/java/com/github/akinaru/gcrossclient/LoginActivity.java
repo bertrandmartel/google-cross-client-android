@@ -165,23 +165,30 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mLocalAuthTv = (TextView) findViewById(R.id.local_status_text);
         mRemoteAuthTv = (TextView) findViewById(R.id.remote_status_text);
 
-        //trust self signed certificate : THIS SHOULD BE REMOVED IN PRODUCTION
-        HttpStack hurlStack = new HurlStack() {
-            @Override
-            protected HttpURLConnection createConnection(URL url) throws IOException {
-                HttpsURLConnection httpsURLConnection = (HttpsURLConnection) super.createConnection(url);
-                try {
-                    httpsURLConnection.setSSLSocketFactory(SSLCertificateSocketFactory.getInsecure(0, null));
-                    httpsURLConnection.setHostnameVerifier(new AllowAllHostnameVerifier());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return httpsURLConnection;
-            }
-        };
+        if (serverProtocol.equals("https")) {
 
-        //setup volley
-        queue = Volley.newRequestQueue(this, hurlStack);
+            //trust self signed certificate : THIS SHOULD BE REMOVED IN PRODUCTION
+            HttpStack hurlStack = new HurlStack() {
+                @Override
+                protected HttpURLConnection createConnection(URL url) throws IOException {
+                    HttpsURLConnection httpsURLConnection = (HttpsURLConnection) super.createConnection(url);
+                    try {
+                        httpsURLConnection.setSSLSocketFactory(SSLCertificateSocketFactory.getInsecure(0, null));
+                        httpsURLConnection.setHostnameVerifier(new AllowAllHostnameVerifier());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return httpsURLConnection;
+                }
+            };
+
+            queue = Volley.newRequestQueue(this, hurlStack);
+
+        } else {
+
+            queue = Volley.newRequestQueue(this, null);
+            
+        }
 
         //google signin configuration
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
