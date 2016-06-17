@@ -22,6 +22,8 @@ public class ResponseFrame {
      */
     private String message;
 
+    private String deviceId;
+
     /**
      * Build Response frame object.
      *
@@ -29,10 +31,11 @@ public class ResponseFrame {
      * @param code    event code
      * @param message request message
      */
-    public ResponseFrame(FrameStatus status, EventCode code, String message) {
+    public ResponseFrame(FrameStatus status, EventCode code, String message, String deviceId) {
         this.status = status;
         this.message = message;
         this.eventCode = code;
+        this.deviceId = deviceId;
     }
 
     /**
@@ -60,5 +63,9 @@ public class ResponseFrame {
      */
     public EventCode getEventCode() {
         return eventCode;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
     }
 }

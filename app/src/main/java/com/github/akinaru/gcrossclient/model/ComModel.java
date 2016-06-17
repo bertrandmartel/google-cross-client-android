@@ -17,6 +17,8 @@ public class ComModel {
      */
     private static final String RESPONSE_FIELD_MESSAGE = "message";
 
+    private static final String RESPONSE_FIELD_DEVICEID = "deviceId";
+
     /**
      * status field for auth response.
      */
@@ -78,7 +80,12 @@ public class ComModel {
                     final FrameStatus status = FrameStatus.get(responseObj.getInt(RESPONSE_FIELD_STATUS));
                     final EventCode eventCode = EventCode.getStatusCode(responseObj.getInt(RESPONSE_FIELD_EVENTCODE));
 
-                    return new ResponseFrame(status, eventCode, responseObj.getString(RESPONSE_FIELD_MESSAGE));
+                    String deviceId = "";
+
+                    if (responseObj.has(RESPONSE_FIELD_DEVICEID)) {
+                        deviceId = responseObj.getString(RESPONSE_FIELD_DEVICEID);
+                    }
+                    return new ResponseFrame(status, eventCode, responseObj.getString(RESPONSE_FIELD_MESSAGE), deviceId);
                 }
             }
         } catch (JSONException e) {

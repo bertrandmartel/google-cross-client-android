@@ -82,6 +82,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
      */
     private TextView mRemoteAuthTv;
 
+    private TextView mRemoteDeviceIdTv;
+
     /**
      * define if signout remote request should be sent once we receive successfull signin from user/app.
      */
@@ -125,12 +127,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     /**
      * signout api.
      */
-    private static final String SERVER_SIGNOUT_API = "/api/signout";
+    private static final String SERVER_SIGNOUT_API = "/api/v1/signout";
 
     /**
      * signin api.
      */
-    private static final String SERVER_SIGNIN_API = "/api/signin";
+    private static final String SERVER_SIGNIN_API = "/api/v1/signin";
 
     /**
      * server clientId value.
@@ -164,6 +166,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         //textview configsss
         mLocalAuthTv = (TextView) findViewById(R.id.local_status_text);
         mRemoteAuthTv = (TextView) findViewById(R.id.remote_status_text);
+        mRemoteDeviceIdTv = (TextView) findViewById(R.id.remote_deviceid_text);
 
         if (serverProtocol.equals("https")) {
 
@@ -187,7 +190,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         } else {
 
             queue = Volley.newRequestQueue(this, null);
-            
+
         }
 
         //google signin configuration
@@ -375,7 +378,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
                         Log.v(TAG, "response : " + response.toString());
 
-                        ResponseFrame responseFrame = ComModel.parseResponse(response);
+                        final ResponseFrame responseFrame = ComModel.parseResponse(response);
                         if (responseFrame != null) {
                             Log.v(TAG, "response.getStatus()  : " + responseFrame.getStatus());
                             Log.v(TAG, "response.getMessage() : " + responseFrame.getMessage());
@@ -387,6 +390,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                         mRemoteAuthTv.setVisibility(View.VISIBLE);
                                         mRemoteAuthTv.setTextColor(Color.parseColor("#039967"));
                                         mRemoteAuthTv.setText("Remote Authentication successfull");
+
+                                        mRemoteDeviceIdTv.setVisibility(View.VISIBLE);
+                                        mRemoteDeviceIdTv.setText(responseFrame.getDeviceId());
+
                                         findViewById(R.id.img_remote_status_img).setVisibility(View.VISIBLE);
                                         findViewById(R.id.img_remote_status_img).setBackgroundResource(R.drawable.ok);
 
@@ -450,6 +457,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         findViewById(R.id.img_local_status_img).setVisibility(View.GONE);
         findViewById(R.id.img_remote_status_img).setVisibility(View.GONE);
         findViewById(R.id.separator_auth).setVisibility(View.GONE);
+        mRemoteDeviceIdTv.setVisibility(View.GONE);
     }
 
     /**
