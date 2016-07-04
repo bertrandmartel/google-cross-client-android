@@ -47,7 +47,12 @@ public enum EventCode {
     /**
      * device is not authorized and cant registrate to server.
      */
-    DEVICE_NOT_AUTHORIZED(9);
+    DEVICE_NOT_AUTHORIZED(9),
+
+    /**
+     * duplicate device is detected
+     */
+    DUPLICATE_DEVICE(10);
 
     /**
      * event code value.
