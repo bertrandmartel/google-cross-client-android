@@ -2,7 +2,7 @@
 
 The Android client part that authentify with remote server compliant with <a href="https://developers.google.com/identity/protocols/CrossClientAuth">google standards</a>
 
-To be used with this Node JS server : https://github.com/akinaru/google-cross-client-node
+To be used with this Node JS server : https://github.com/bertrandmartel/google-cross-client-node
 
 ## Features
 
